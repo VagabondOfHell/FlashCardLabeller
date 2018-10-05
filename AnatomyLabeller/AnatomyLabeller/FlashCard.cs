@@ -9,31 +9,87 @@ namespace AnatomyLabeller
 {
     public class FlashCard
     {
-        string cardName;
-        List<Label> cardLabels;
-        string cardBitmapFilepath;
-        Size imageSize;
+		private const int labelCapacity = 8;
+
+        private string cardName = "";
+
+		private string cardBitmapFilepath = "";
+
+		private List<Label> cardLabels = new List<Label> ( labelCapacity );
+
+        private Size imageSize;
 
         public FlashCard()
         {
-            cardName = "";
-            cardBitmapFilepath = "";
-
-            cardLabels = new List<Label>(8);
+            
         }
 
+		/// <summary>
+		/// Class constructor
+		/// </summary>
+		/// <param name="name">Card name</param>
+		/// <param name="bitmapFilepath">File path to image</param>
         public FlashCard(string name, string bitmapFilepath = null)
         {
-            cardName = name;
-            cardBitmapFilepath = bitmapFilepath;
+            CardName = name;
 
-            cardLabels = new List<Label>(8);
+			ImageFilepath = bitmapFilepath;
         }
 
-        public void AddLabel(Label newLabel)
+		public string CardName
+		{
+			get
+			{
+				return cardName;
+			}
+			set
+			{
+				cardName = value;
+			}
+		}
+
+		public string ImageFilepath
+		{
+			get
+			{
+				return cardBitmapFilepath;
+			}
+			set
+			{
+				cardBitmapFilepath = value;
+			}
+		}
+
+		public Size ImageSize
+		{
+			get
+			{
+				return imageSize;
+			}
+			set
+			{
+				imageSize = value;
+			}
+		}
+
+		public Label [ ] Labels
+		{
+			get
+			{
+				return cardLabels.ToArray ( );
+			}
+		}
+
+		/// <summary>
+		/// Adds a label
+		/// </summary>
+		/// <param name="newLabel"Label to be added></param>
+		public void AddLabel(Label newLabel)
         {
-            if(!cardLabels.Contains(newLabel))
-                cardLabels.Add(newLabel);
+			if ( !cardLabels.Contains(newLabel))
+			{
+				cardLabels.Add(newLabel);
+			}   
         }
 
         /// <summary>
@@ -43,60 +99,22 @@ namespace AnatomyLabeller
         /// <returns>True if it contains the id, false if not</returns>
         public bool ContainsID(int id)
         {
-            foreach (Label label in cardLabels)
-            {
-                if (label.GetID() == id)
-                    return true;
-            }
+			var label = cardLabels.Where ( card => card.ID == id ).FirstOrDefault();
 
-            return false;
+			return label == null ? false : true;
         }
 
-        public string GetCardName()
-        {
-            return cardName;
-        }
-
-        public void SetCardName(string name)
-        {
-            cardName = name;
-        }
-
-        public string GetImageFilepath()
-        {
-            return cardBitmapFilepath;
-        }
-
-        public Size GetImageSize()
-        {
-            return imageSize;
-        }
-
-        /// <summary>
-        /// Set the image that the flash card will use
-        /// </summary>
-        /// <param name="filePath">The path that directs to the image</param>
-        /// <param name="size">The size of the image in the picturebox</param>
-        public void SetImage(string filePath, Size size)
+		/// <summary>
+		/// Set the image that the flash card will use
+		/// </summary>
+		/// <param name="filePath">The path that directs to the image</param>
+		/// <param name="size">The size of the image in the picturebox</param>
+		public void SetImage(string filePath, Size size)
         {
             cardBitmapFilepath = filePath;
+
             imageSize = size;
-        }
-
-        public void SetFilePath(string imageFilePath)
-        {
-            cardBitmapFilepath = imageFilePath;
-        }
-
-        public void SetImageSize(Size size)
-        {
-            imageSize = size;
-        }
-
-        public Label[] GetLabels()
-        {
-            return cardLabels.ToArray();
-        }
+        }      
 
         /// <summary>
         /// Removes the specified label from the card

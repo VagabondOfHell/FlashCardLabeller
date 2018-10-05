@@ -1,95 +1,103 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
 namespace AnatomyLabeller
 {
-    public class Label
-    {
-        Point originPosition;
-        Point drawPosition;
+	public class Label
+	{
+		private const int radius = 10;
 
-        const int radius = 10;
-        const int diameter = radius * 2;
+		private const int diameter = radius * 2;
 
-        string name;
-        int ID;
+		private string name = "";
 
-        public Label()
-        {
-            name = "";
-            ID = -1;
-            originPosition = new Point();
-            drawPosition = new Point();
-        }
+		private int id = -1;
 
-        public Label(int id, string _name, Point _position = new Point())
-        {
-            name = _name;
+		private Point originPosition;
 
-            ID = id;
+		private Point drawPosition;
 
-            originPosition = _position;
-            //Subtract radius because we want the position to represent the center
-            //of the circle, but we have to draw it as a square
-            drawPosition.X = originPosition.X - radius;
-            drawPosition.Y = originPosition.Y - radius;
-        }
+		public Label ( )
+		{
+			originPosition = new Point ( );
 
-        public Point GetOrigin()
-        {
-            return originPosition;
-        }
+			drawPosition = new Point ( );
+		}
 
-        public string GetName()
-        {
-            return name;
-        }
+		public Label ( int id , string _name , Point _position = new Point ( ) )
+		{
+			Name = _name;
 
-        public int GetID()
-        {
-            return ID;
-        }
+			ID = id;
 
-        public void SetID(uint id)
-        {
-            ID = (int)id;
-        }
+			originPosition = _position;
 
-        public void SetName(string _name)
-        {
-            name = _name;
-        }
+			//Subtract radius because we want the position to represent the center
+			//of the circle, but we have to draw it as a square
+			drawPosition.X = originPosition.X - radius;
 
-        /// <summary>
-        /// Gets the rectangle to draw in
-        /// </summary>
-        /// <returns>The rectangle representing the draw area</returns>
-        public Rectangle GetDrawingRectangle()
-        {
-            return new Rectangle(drawPosition.X, drawPosition.Y,diameter, diameter);
-        }
+			drawPosition.Y = originPosition.Y - radius;
+		}
 
-        public void SetPosition(Point _position)
-        {
-            originPosition = _position;
+		public Point Origin
+		{
+			get
+			{
+				return originPosition;
+			}
+		}
 
-            //Subtract radius because we want the position to represent the center
-            //of the circle, but we have to draw it as a square
-            drawPosition.X = originPosition.X - radius;
-            drawPosition.Y = originPosition.Y - radius;
-        }
+		public string Name
+		{
+			get
+			{
+				return name;
+			}
+			set
+			{
+				name = value;
+			}
+		}
 
-        public bool MouseClick(Point mousePosition)
-        {
-            PointF difference = new PointF(originPosition.X - mousePosition.X, originPosition.Y - mousePosition.Y);
-            float magnitude = (float)Math.Sqrt((difference.X * difference.X) + (difference.Y * difference.Y));
+		public int ID
+		{
+			get
+			{
+				return id;
+			}
+			set
+			{
+				id = value;
+			}
+		}
 
-            return magnitude <= radius;     
-        }
+		/// <summary>
+		/// Gets the rectangle to draw in
+		/// </summary>
+		/// <returns>The rectangle representing the draw area</returns>
+		public Rectangle GetDrawingRectangle ( )
+		{
+			return new Rectangle ( drawPosition.X , drawPosition.Y , diameter , diameter );
+		}
 
-    }
+		public void SetPosition ( Point _position )
+		{
+			originPosition = _position;
+
+			//Subtract radius because we want the position to represent the center
+			//of the circle, but we have to draw it as a square
+			drawPosition.X = originPosition.X - radius;
+
+			drawPosition.Y = originPosition.Y - radius;
+		}
+
+		public bool MouseClick ( Point mousePosition )
+		{
+			PointF difference = new PointF ( originPosition.X - mousePosition.X , originPosition.Y - mousePosition.Y );
+
+			float magnitude = ( float ) Math.Sqrt ( ( difference.X * difference.X ) + ( difference.Y * difference.Y ) );
+
+			return magnitude <= radius;
+		}
+	}
 }
